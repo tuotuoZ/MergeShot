@@ -1,6 +1,6 @@
 [package]
 name = "mergeshot"
-version = "0.1.0"
+version = "0.1.1"
 description = "Fast lossless merging for split camera recordings."
 authors = ["MergeShot Contributors"]
 license = "MIT"
