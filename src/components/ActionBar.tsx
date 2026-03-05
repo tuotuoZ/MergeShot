@@ -30,6 +30,22 @@ export default function ActionBar() {
 
   const progress = session?.mergeProgress;
 
+  // ETA — recomputed on every progress event (fires ~every 0.5s)
+  const pct = progress?.progress ?? 0;
+  const elapsedSec = isMerging && session?.mergeStartedAt
+    ? (Date.now() - session.mergeStartedAt) / 1000
+    : 0;
+  const etaSec = pct > 0.02 && elapsedSec > 1
+    ? (elapsedSec * (1 - pct)) / pct
+    : null;
+
+  function formatEta(s: number): string {
+    if (s < 60) return `~${Math.round(s)}s left`;
+    const m = Math.floor(s / 60);
+    const r = Math.round(s % 60);
+    return `~${m}m ${r}s left`;
+  }
+
   async function handleMerge() {
     if (!session) return;
 
@@ -113,11 +129,16 @@ export default function ActionBar() {
           <>
             <div className="progress-track">
               <div
-                className="progress-fill"
-                style={{ width: `${Math.round(progress.progress * 100)}%` }}
+                className={`progress-fill${pct < 0.02 ? ' indeterminate' : ''}`}
+                style={{ width: `${Math.round(pct * 100)}%` }}
               />
             </div>
-            <div className="progress-text">{progress.stepText}</div>
+            <div className="progress-label-row">
+              <span className="progress-text">{progress.stepText}</span>
+              {etaSec !== null && (
+                <span className="progress-eta">{formatEta(etaSec)}</span>
+              )}
+            </div>
           </>
         )}
         {isDone && (

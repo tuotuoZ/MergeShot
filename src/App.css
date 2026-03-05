@@ -434,24 +434,49 @@ body {
   min-width: 0;
 }
 .progress-track {
-  height: 4px;
+  height: 6px;
   background: var(--border);
-  border-radius: 2px;
+  border-radius: 3px;
   overflow: hidden;
 }
 .progress-fill {
   height: 100%;
-  background: var(--accent);
-  border-radius: 2px;
-  transition: width 300ms ease;
+  background: linear-gradient(to right, var(--accent), #34C7A0);
+  border-radius: 3px;
+  transition: width 400ms ease;
 }
-.progress-fill.done { background: var(--success); }
+.progress-fill.done { background: var(--success); transition: none; }
+.progress-fill.indeterminate {
+  width: 100% !important;
+  background: linear-gradient(90deg, transparent 0%, var(--accent) 40%, #34C7A0 60%, transparent 100%);
+  background-size: 200% 100%;
+  animation: progress-shimmer 1.6s ease-in-out infinite;
+}
+@keyframes progress-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+.progress-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
 .progress-text {
   font-size: 11px;
   color: var(--text-secondary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0;
+}
+.progress-eta {
+  font-size: 11px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 /* ─── Buttons ────────────────────────────────────────────────────────────────── */

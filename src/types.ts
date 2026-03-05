@@ -92,6 +92,7 @@ export interface MergeProgress {
   progress: number;
   stepText: string;
   speed?: number;
+  outTimeUs?: number;
 }
 
 export interface Session {
@@ -104,6 +105,7 @@ export interface Session {
   status: SessionStatus;
   warnings: SessionWarning[];
   mergeProgress?: MergeProgress;
+  mergeStartedAt?: number;
   /** Set after successful merge */
   outputPath?: string;
   /** Set on merge error — includes last few lines of ffmpeg stderr */

@@ -384,7 +384,7 @@ export const useAppStore = create<AppStore>((set, get) => ({
     set((state) => ({
       sessions: state.sessions.map((s) =>
         s.id === sessionId
-          ? { ...s, status: 'merging', mergeProgress: { progress: 0, stepText: 'Starting…' } }
+          ? { ...s, status: 'merging', mergeStartedAt: Date.now(), mergeProgress: { progress: 0, stepText: 'Starting…' } }
           : s
       ),
     }));
@@ -446,11 +446,11 @@ export const useAppStore = create<AppStore>((set, get) => ({
     const unlistenProgress = await listen<MergeProgressEvent>(
       'merge-progress',
       (event) => {
-        const { sessionId, progress, stepText, speed } = event.payload;
+        const { sessionId, progress, stepText, speed, outTimeUs } = event.payload;
         set((state) => ({
           sessions: state.sessions.map((s) =>
             s.id === sessionId
-              ? { ...s, mergeProgress: { progress, stepText, speed } }
+              ? { ...s, mergeProgress: { progress, stepText, speed, outTimeUs } }
               : s
           ),
         }));
